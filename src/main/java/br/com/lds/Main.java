@@ -124,7 +124,7 @@ public class Main {
 			String nome = scanner.next();
 			Cavalo cavalo = new Cavalo(id, nome);
 			System.out.println("O cavalo foi inserido com sucesso");
-			animais.add(cavalo);
+			animais.add(id, cavalo);
 			TimeUnit.SECONDS.sleep(2);
 		} catch (Exception e) {
 			scanner.next();
@@ -140,7 +140,7 @@ public class Main {
 			String nome = scanner.next();
 			Girafa girafa = new Girafa(id, nome);
 			System.out.println("A girafa foi inserida com sucesso");
-			animais.add(girafa);
+			animais.add(id, girafa);
 			TimeUnit.SECONDS.sleep(2);
 		} catch (Exception e) {
 			scanner.next();
@@ -186,12 +186,30 @@ public class Main {
 	private void listarTodosAnimais() {
 		for (Animal animal : animais) {
 			System.out.println("Dados do animal:" + animal.getClass() + "|" + animal.getNome() + "|" + animal.getId());
+		}
 
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
 
 	private void removerAnimalPorID() {
+		try {
+			System.out.print("Insira o id do animal a ser removido: ");
+			int remover = scanner.nextInt();
+			animais.remove(remover);
+			System.out.println("Animal removido com sucesso.");
+			TimeUnit.SECONDS.sleep(2);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			scanner.next();
+			// TODO: handle exception
+		}
 	}
 
 	private void exibirQuantidadeDeAnimaisPorTipo() {
