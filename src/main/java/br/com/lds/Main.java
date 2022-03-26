@@ -1,6 +1,13 @@
 package br.com.lds;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
+import br.com.lds.models.Animal;
+import br.com.lds.models.Cavalo;
+import br.com.lds.models.Girafa;
 
 public class Main {
 
@@ -11,7 +18,9 @@ public class Main {
 
 	}
 
-	private Scanner scanner = new Scanner(System.in);
+	Scanner scanner = new Scanner(System.in);
+	List<Animal> animais = new ArrayList<Animal>();
+	int id = -1;
 
 	private void start() {
 
@@ -39,13 +48,15 @@ public class Main {
 			switch (opcao) {
 			case 1:
 
-				cadastrarCavalo();
+				id += 1;
+				cadastrarCavalo(id);
 
 				break;
 
 			case 2:
 
-				cadastrarGirafa();
+				id += 1;
+				cadastrarGirafa(id);
 
 				break;
 
@@ -80,10 +91,12 @@ public class Main {
 
 			case 8:
 
+				emExecucao = false;
+
 				break;
 
 			default:
-				System.out.println("Opção invalida.");
+				System.out.println("Opcao invalida.");
 				break;
 			}
 
@@ -101,23 +114,81 @@ public class Main {
 		System.out.println("7. Exbir a quantidade de animais por tipo");
 		System.out.println("8. Sair");
 
-		System.out.println("Sua opcao: ");
+		System.out.print("Sua opcao: ");
 
 	}
 
-	private void cadastrarCavalo() {
+	private void cadastrarCavalo(int id) {
+		try {
+			System.out.print("Insira o nome do cavalo: ");
+			String nome = scanner.next();
+			Cavalo cavalo = new Cavalo(id, nome);
+			System.out.println("O cavalo foi inserido com sucesso");
+			animais.add(cavalo);
+			TimeUnit.SECONDS.sleep(2);
+		} catch (Exception e) {
+			scanner.next();
+			System.out.println(e.getMessage());
+			System.out.println("Ocorreu um erro.");
+
+		}
 	}
 
-	private void cadastrarGirafa() {
+	private void cadastrarGirafa(int id) {
+		try {
+			System.out.print("Insira o nome da girafa: ");
+			String nome = scanner.next();
+			Girafa girafa = new Girafa(id, nome);
+			System.out.println("A girafa foi inserida com sucesso");
+			animais.add(girafa);
+			TimeUnit.SECONDS.sleep(2);
+		} catch (Exception e) {
+			scanner.next();
+			System.out.println(e.getMessage());
+			System.out.println("Ocorreu um erro.");
+
+		}
+
+		for (Animal animal : animais) {
+			System.out.println("nome: " + animal.getNome() + " id: " + animal.getId());
+
+		}
 	}
 
 	private void listarCavalo() {
+		for (Animal animal : animais) {
+			if (animal instanceof Cavalo) {
+				System.out.println("Dados do cavalo: " + animal.getId() + "|" + animal.getNome());
+			}
+		}
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void listarGirafa() {
+		for (Animal animal : animais) {
+			if (animal instanceof Girafa) {
+				System.out.println("Dados da girafa: " + animal.getId() + "|" + animal.getNome());
+			}
+		}
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void listarTodosAnimais() {
+		for (Animal animal : animais) {
+			System.out.println("Dados do animal:" + animal.getClass() + "|" + animal.getNome() + "|" + animal.getId());
+
+		}
+
 	}
 
 	private void removerAnimalPorID() {
