@@ -213,6 +213,22 @@ public class Main {
 	}
 
 	private void exibirQuantidadeDeAnimaisPorTipo() {
+		int contaCavalo = 0;
+		int contaGirafa = 0;
+		for (Animal animal : animais) {
+			if (animal instanceof Cavalo) {
+				contaCavalo += 1;
+				System.out.println("Dados do cavalo: " + animal.getId() + "|" + animal.getNome());
+			} else if (animal instanceof Girafa) {
+				contaGirafa += 1;
+				System.out.println("Dados da Girafa: " + animal.getId() + "|" + animal.getNome());
+
+			}
+
+			System.out.println("Quantidade de cavalo: " + contaCavalo);
+			System.out.println("Quantidade de girafa: " + contaGirafa);
+			System.out.println("Total de animais cadastrados: " + animais.size());
+		}
 	}
 
 }
