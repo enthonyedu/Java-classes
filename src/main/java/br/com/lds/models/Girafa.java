@@ -1,9 +1,14 @@
 package br.com.lds.models;
 
 public class Girafa extends Animal {
-	public Girafa(int id, String nome) {
-		setId(id);
+
+	public Girafa(String nome) {
+
+		setId(getIdUnico());
 		setNome(nome);
+
+		incrementarIdUnico();
+
 	}
 
 }

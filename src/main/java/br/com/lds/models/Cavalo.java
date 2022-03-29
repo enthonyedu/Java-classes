@@ -1,10 +1,12 @@
 package br.com.lds.models;
 
 public class Cavalo extends Animal {
-	public Cavalo(int id, String nome) {
+	public Cavalo(String nome) {
 
-		setId(id);
+		setId(getIdUnico());
 		setNome(nome);
+
+		incrementarIdUnico();
 
 	}
 

@@ -1,7 +1,9 @@
 package br.com.lds;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +22,6 @@ public class Main {
 
 	Scanner scanner = new Scanner(System.in);
 	List<Animal> animais = new ArrayList<Animal>();
-	int id = -1;
 
 	private void start() {
 
@@ -43,20 +44,20 @@ public class Main {
 				System.out.println("Ocorreu um erro. Tente novamente");
 				System.out.println("-----");
 
+				continue;
+
 			}
 
 			switch (opcao) {
 			case 1:
 
-				id += 1;
-				cadastrarCavalo(id);
+				cadastrarCavalo();
 
 				break;
 
 			case 2:
 
-				id += 1;
-				cadastrarGirafa(id);
+				cadastrarGirafa();
 
 				break;
 
@@ -79,7 +80,17 @@ public class Main {
 				break;
 
 			case 6:
-				removerAnimalPorID();
+				System.out.println("----------");
+				System.out.print("Insira o id do animal a ser removido: ");
+
+				try {
+
+					int idDoAnimal = scanner.nextInt();
+					removerAnimalPorID(idDoAnimal);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					scanner.next();
+				}
 
 				break;
 
@@ -100,6 +111,8 @@ public class Main {
 				break;
 			}
 
+			System.out.println("----------");
+
 		}
 
 	}
@@ -118,33 +131,39 @@ public class Main {
 
 	}
 
-	private void cadastrarCavalo(int id) {
+	private void cadastrarCavalo() {
+
+		System.out.println("----------");
+		System.out.print("Insira o nome do cavalo: ");
 		try {
-			System.out.print("Insira o nome do cavalo: ");
 			String nome = scanner.next();
-			Cavalo cavalo = new Cavalo(id, nome);
+			Cavalo cavalo = new Cavalo(nome);
+			animais.add(cavalo);
 			System.out.println("O cavalo foi inserido com sucesso");
-			animais.add(id, cavalo);
 			TimeUnit.SECONDS.sleep(2);
 		} catch (Exception e) {
-			scanner.next();
 			System.out.println(e.getMessage());
+			scanner.next();
 			System.out.println("Ocorreu um erro.");
 
 		}
 	}
 
-	private void cadastrarGirafa(int id) {
+	private void cadastrarGirafa() {
+
+		System.out.print("Insira o nome da girafa: ");
 		try {
-			System.out.print("Insira o nome da girafa: ");
 			String nome = scanner.next();
-			Girafa girafa = new Girafa(id, nome);
+			Girafa girafa = new Girafa(nome);
+
+			animais.add(girafa);
 			System.out.println("A girafa foi inserida com sucesso");
-			animais.add(id, girafa);
+
 			TimeUnit.SECONDS.sleep(2);
 		} catch (Exception e) {
-			scanner.next();
+
 			System.out.println(e.getMessage());
+			scanner.next();
 			System.out.println("Ocorreu um erro.");
 
 		}
@@ -156,78 +175,112 @@ public class Main {
 	}
 
 	private void listarCavalo() {
+
+		System.out.println("----------");
+
 		for (Animal animal : animais) {
 			if (animal instanceof Cavalo) {
 				System.out.println("Dados do cavalo: " + animal.getId() + "|" + animal.getNome());
 			}
 		}
-		try {
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void listarGirafa() {
+
+		System.out.println("----------");
+
 		for (Animal animal : animais) {
 			if (animal instanceof Girafa) {
 				System.out.println("Dados da girafa: " + animal.getId() + "|" + animal.getNome());
 			}
 		}
-		try {
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void listarTodosAnimais() {
 		for (Animal animal : animais) {
-			System.out.println("Dados do animal:" + animal.getClass() + "|" + animal.getNome() + "|" + animal.getId());
-		}
-
-		try {
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	private void removerAnimalPorID() {
-		try {
-			System.out.print("Insira o id do animal a ser removido: ");
-			int remover = scanner.nextInt();
-			animais.remove(remover);
-			System.out.println("Animal removido com sucesso.");
-			TimeUnit.SECONDS.sleep(2);
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			scanner.next();
-			// TODO: handle exception
+			System.out.println("Dados do animal:" + animal.getClass().getSimpleName() + "|" + animal.getNome() + "|"
+					+ animal.getId());
 		}
 	}
 
-	private void exibirQuantidadeDeAnimaisPorTipo() {
-		int contaCavalo = 0;
-		int contaGirafa = 0;
-		for (Animal animal : animais) {
-			if (animal instanceof Cavalo) {
-				contaCavalo += 1;
-				System.out.println("Dados do cavalo: " + animal.getId() + "|" + animal.getNome());
-			} else if (animal instanceof Girafa) {
-				contaGirafa += 1;
-				System.out.println("Dados da Girafa: " + animal.getId() + "|" + animal.getNome());
+	private void removerAnimalPorID(int idDoAnimal) {
+
+		int indiceDaLista = -1;
+
+		for (int i = 0; i < animais.size(); i++) {
+
+			Animal animal = animais.get(i);
+			if (animal.getId() == idDoAnimal) {
+				indiceDaLista = i;
+				break;
 
 			}
 
-			System.out.println("Quantidade de cavalo: " + contaCavalo);
-			System.out.println("Quantidade de girafa: " + contaGirafa);
-			System.out.println("Total de animais cadastrados: " + animais.size());
+		}
+
+		if (indiceDaLista == -1) {
+			System.out.println("Animal não encontrado");
+			return;
+
+		}
+
+		animais.remove(indiceDaLista);
+		System.out.println("Animal removido com sucesso.");
+
+	}
+
+	private void exibirQuantidadeDeAnimaisPorTipo() {
+
+		System.out.println("----------");
+		if (animais.size() == 0) {
+			System.out.println("Lista vazia");
+			return;
+		}
+
+		final String chaveCavalo = "CAVALO";
+		final String chaveGirafa = "GIRAFA";
+
+		Map<String, List<Animal>> mapaDeAnimais = new HashMap<String, List<Animal>>();
+
+		mapaDeAnimais.put(chaveCavalo, new ArrayList<Animal>());
+		mapaDeAnimais.put(chaveGirafa, new ArrayList<Animal>());
+
+		for (Animal animal : animais) {
+
+			if (animal instanceof Cavalo) {
+
+				List<Animal> listaDeCavalos = mapaDeAnimais.get(chaveCavalo);
+
+				listaDeCavalos.add(animal);
+
+			} else if (animal instanceof Girafa) {
+
+				List<Animal> listaDeGirafas = mapaDeAnimais.get(chaveGirafa);
+
+				listaDeGirafas.add(animal);
+
+			}
+
+		}
+
+		List<Animal> cavalos = mapaDeAnimais.get(chaveCavalo);
+		List<Animal> girafas = mapaDeAnimais.get(chaveGirafa);
+
+		System.out.println("Quantidade de cavalo: " + cavalos.size());
+		System.out.println("Quantidade de girafa: " + girafas.size());
+		System.out.println("Total de animais cadastrados: " + animais.size());
+
+		for (Animal animal : animais) {
+			if (animal instanceof Cavalo) {
+
+				System.out.println("Dados do cavalo: " + animal.getId() + "|" + animal.getNome());
+
+			} else if (animal instanceof Girafa) {
+
+				System.out.println("Dados da girafa: " + animal.getId() + "|" + animal.getNome());
+
+			}
+
 		}
 	}
 
